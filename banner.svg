@@ -1,0 +1,131 @@
+<svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#0F1923"/>
+      <stop offset="50%"  stop-color="#1B4F72"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="orbit_grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FF6B35" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#FF6B35" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="200" fill="url(#bg)" rx="12"/>
+
+  <!-- Stars -->
+  <g fill="white" opacity="0.5">
+    <circle cx="30"  cy="20"  r="1"/>
+    <circle cx="80"  cy="50"  r="1.5"/>
+    <circle cx="150" cy="15"  r="1"/>
+    <circle cx="200" cy="80"  r="1"/>
+    <circle cx="50"  cy="130" r="1.5"/>
+    <circle cx="750" cy="25"  r="1"/>
+    <circle cx="820" cy="70"  r="1.5"/>
+    <circle cx="860" cy="150" r="1"/>
+    <circle cx="880" cy="30"  r="1.2"/>
+    <circle cx="700" cy="160" r="1"/>
+    <circle cx="500" cy="10"  r="1.3"/>
+    <circle cx="600" cy="180" r="1"/>
+    <circle cx="450" cy="170" r="1.5"/>
+    <circle cx="300" cy="190" r="1"/>
+    <circle cx="100" cy="180" r="1.2"/>
+  </g>
+
+  <!-- Earth (simplified) -->
+  <circle cx="100" cy="120" r="55" fill="#1A5276" opacity="0.7"/>
+  <ellipse cx="100" cy="120" rx="55" ry="25" fill="#1E8449" opacity="0.5"/>
+  <circle cx="100" cy="120" r="55" fill="none" stroke="#2E86C1" stroke-width="1" opacity="0.4"/>
+
+  <!-- Orbit ring -->
+  <ellipse cx="100" cy="120" rx="80" ry="28" fill="none"
+           stroke="url(#orbit_grad)" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.7">
+    <animateTransform attributeName="transform" type="rotate"
+                      from="0 100 120" to="360 100 120" dur="20s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Satellite body -->
+  <g filter="url(#glow)">
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+                        from="0 100 120" to="360 100 120" dur="8s" repeatCount="indefinite"/>
+      <!-- Position satellite on orbit -->
+      <g transform="translate(180, 97)">
+        <!-- Solar panels -->
+        <rect x="-22" y="-4" width="16" height="8" fill="#F39C12" rx="1"/>
+        <rect x="6"   y="-4" width="16" height="8" fill="#F39C12" rx="1"/>
+        <!-- Body -->
+        <rect x="-6"  y="-6" width="12" height="12" fill="#BDC3C7" rx="2"/>
+        <!-- Antenna -->
+        <line x1="0" y1="-6" x2="0" y2="-12" stroke="#ECF0F1" stroke-width="1.5"/>
+        <circle cx="0" cy="-13" r="2" fill="#E74C3C"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Signal lines from satellite -->
+  <g opacity="0.3" stroke="#FF6B35" stroke-width="1" fill="none">
+    <line x1="178" y1="85" x2="200" y2="100">
+      <animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="180" y1="88" x2="205" y2="110">
+      <animate attributeName="opacity" values="0;0.4;0" dur="2.5s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- Title text -->
+  <text x="230" y="75" font-size="26" font-weight="800" fill="white" filter="url(#glow2)"
+        letter-spacing="-0.5">
+    🛰️ ISRO Satellite Image Classification
+  </text>
+
+  <!-- Subtitle -->
+  <text x="232" y="105" font-size="13" fill="#BDC3C7" letter-spacing="0.5">
+    Advanced Deep Learning Ensemble · EuroSAT · Sentinel-2 · Resourcesat-2A
+  </text>
+
+  <!-- Badges row -->
+  <g transform="translate(232, 125)">
+    <!-- PyTorch badge -->
+    <rect x="0" y="0" width="90" height="22" rx="4" fill="#EE4C2C"/>
+    <text x="45" y="15" text-anchor="middle" font-size="11" fill="white" font-weight="600">🔥 PyTorch 2.2+</text>
+
+    <!-- Accuracy badge -->
+    <rect x="98" y="0" width="100" height="22" rx="4" fill="#27AE60"/>
+    <text x="148" y="15" text-anchor="middle" font-size="11" fill="white" font-weight="600">✅ 96.8% Accuracy</text>
+
+    <!-- Models badge -->
+    <rect x="206" y="0" width="110" height="22" rx="4" fill="#1B4F72"/>
+    <text x="261" y="15" text-anchor="middle" font-size="11" fill="white" font-weight="600">🧠 5-Model Ensemble</text>
+
+    <!-- MIT badge -->
+    <rect x="324" y="0" width="80" height="22" rx="4" fill="#8E44AD"/>
+    <text x="364" y="15" text-anchor="middle" font-size="11" fill="white" font-weight="600">📜 MIT License</text>
+
+    <!-- Docker badge -->
+    <rect x="412" y="0" width="90" height="22" rx="4" fill="#2496ED"/>
+    <text x="457" y="15" text-anchor="middle" font-size="11" fill="white" font-weight="600">🐋 Docker Ready</text>
+  </g>
+
+  <!-- Bottom decorative line -->
+  <line x1="230" y1="168" x2="870" y2="168" stroke="#FF6B35" stroke-width="1" opacity="0.4"/>
+  <text x="232" y="185" font-size="10" fill="#7F8C8D" letter-spacing="1">
+    INDIAN SPACE RESEARCH ORGANISATION  ·  COMPUTER VISION  ·  REMOTE SENSING  ·  2024
+  </text>
+
+  <!-- Animated scanning beam -->
+  <rect x="0" y="0" width="4" height="200" rx="2" fill="#FF6B35" opacity="0.15">
+    <animate attributeName="x" values="-10;910;-10" dur="6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0.2;0" dur="6s" repeatCount="indefinite"/>
+  </rect>
+</svg>
