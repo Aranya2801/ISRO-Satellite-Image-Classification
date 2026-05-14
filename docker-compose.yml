@@ -1,0 +1,129 @@
+version: "3.9"
+
+# =============================================================================
+# ISRO Satellite Classification — Docker Compose
+# Services: API · Dashboard · MLflow · Prometheus · Grafana
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # FastAPI Inference Server
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: isro-satellite-api:2.0.0
+    container_name: isro_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./checkpoints:/app/checkpoints:ro
+      - ./data:/app/data:ro
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - TORCH_HOME=/app/.cache/torch
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ---------------------------------------------------------------------------
+  # Streamlit Dashboard
+  # ---------------------------------------------------------------------------
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: isro-satellite-dashboard:2.0.0
+    container_name: isro_dashboard
+    command: streamlit run src/deployment/streamlit_app.py
+      --server.port=8501
+      --server.address=0.0.0.0
+      --server.headless=true
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./checkpoints:/app/checkpoints:ro
+      - ./data:/app/data:ro
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # MLflow Experiment Tracking
+  # ---------------------------------------------------------------------------
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.12.1
+    container_name: isro_mlflow
+    command: mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Prometheus Monitoring
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: isro_prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Grafana Visualization
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: isro_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=isro2024
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./configs/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  mlflow_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    name: isro_network
+    driver: bridge

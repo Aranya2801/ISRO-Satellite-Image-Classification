@@ -1,0 +1,125 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.pyc
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (large files — use DVC or git-lfs)
+data/
+*.tif
+*.tiff
+*.h5
+*.hdf5
+*.csv
+
+# Model weights and checkpoints
+checkpoints/
+*.pth
+*.pt
+*.onnx
+*.pb
+*.engine
+*.bin
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Logs
+logs/
+*.log
+*.log.*
+tb_logs/
+wandb/
+
+# Results (generated)
+results/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker volumes
+prometheus_data/
+grafana_data/
+mlflow_data/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Pre-commit
+.pre-commit-config.yaml.lock
+
+# Optuna
+optuna.db
+optuna_studies/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.p12
+
+# Cache
+.cache/
+*.cache
